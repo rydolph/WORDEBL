@@ -6,20 +6,23 @@ from secondPage import remove_text_in_brackets
 exportFileName = "text"
 def expand_ranges(text):
     """
-    Функция преобразует числовые диапазоны вида "01 - 03" в список чисел "01, 02, 03".
+    Преобразует числовые диапазоны вида "01 - 03", "101 - 103", "1001 - 1003" в список чисел.
     """
     def replace_range(match):
         start, end = map(int, match.group(1, 2))
-        return ", ".join(f"{i:02}" for i in range(start, end + 1))
+        width = len(match.group(1))  # Длина числа (2, 3, 4 знака)
+        return ", ".join(f"{i:0{width}}" for i in range(start, end + 1))
 
-    return re.sub(r'(\d{2})\s*-\s*(\d{2})', replace_range, text)
+    # Изменённое регулярное выражение для чисел с длиной от 2 до 4 символов
+    return re.sub(r'(\d{2,4})\s*-\s*(\d{2,4})', replace_range, text)
+
 
 def process_docx(file_path, exportFileName):
     """
     Анализирует и редактирует docx файл в соответствии с требованиями.
     """
     # Открытие документа
-    file_path = "VPO1.docx"
+    file_path = "NK.docx"
 
     doc = Document(file_path)
 
@@ -37,6 +40,10 @@ def process_docx(file_path, exportFileName):
         elif "по строке" in text.lower():
             processed_paragraphs.append(text)
         # Если текст не содержит ключевые слова, но есть жирный шрифт, сохраняем
+        elif "в строке" in text.lower():
+            processed_paragraphs.append(text)
+        elif "в строках" in text.lower():
+            processed_paragraphs.append(expand_ranges(text))
         elif is_bold:
             processed_paragraphs.append(text)
         # В противном случае игнорируем абзац
@@ -61,4 +68,4 @@ def process_docx(file_path, exportFileName):
 # Пример использования
 exportFileName = process_docx("gg", exportFileName)
 print(exportFileName)
-remove_text_in_brackets(exportFileName, "processed_VPO1Second.docx")
+remove_text_in_brackets(exportFileName, "processed_inov.docx")
