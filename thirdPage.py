@@ -9,7 +9,7 @@ doc = Document(file_path)
 
 # Шаблоны поиска
 patterns = {
-    "по графам": re.compile(r"по графам (\d+(?:-\d+|(?:,\s*\d+)*))"),
+    "по графам": re.comcompilepile(r"по графам (\d+(?:-\d+|(?:,\s*\d+)*))"),
     "в графах": re.compile(r"в графах (\d+(?:-\d+|(?:,\s*\d+)*))"),
     "по графе": re.compile(r"по графе (\d+)"),
     "в графе": re.compile(r"в графе (\d+)"),
