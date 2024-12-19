@@ -22,7 +22,7 @@ def process_docx(file_path, exportFileName):
     Анализирует и редактирует docx файл в соответствии с требованиями.
     """
     # Открытие документа
-    file_path = "NK.docx"
+    file_path = "vpo1.docx"
 
     doc = Document(file_path)
 
@@ -34,15 +34,15 @@ def process_docx(file_path, exportFileName):
         is_bold = any(run.bold for run in paragraph.runs)
 
         # Если текст содержит "по строкам" или "По строкам"
-        if "по строкам" in text.lower():
+        if "по графам" in text.lower():
             processed_paragraphs.append(expand_ranges(text))
         # Если текст содержит "по строке" или "По строке"
-        elif "по строке" in text.lower():
+        elif "по графе" in text.lower():
             processed_paragraphs.append(text)
         # Если текст не содержит ключевые слова, но есть жирный шрифт, сохраняем
-        elif "в строке" in text.lower():
+        elif "в графе" in text.lower():
             processed_paragraphs.append(text)
-        elif "в строках" in text.lower():
+        elif "в графах" in text.lower():
             processed_paragraphs.append(expand_ranges(text))
         elif is_bold:
             processed_paragraphs.append(text)
